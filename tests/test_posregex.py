@@ -85,6 +85,9 @@ def test_sentnece_01_raw():
     assert mpr.findall(sentence, "名詞名詞", raw=True) == [['すべて\t名詞,副詞可能,*,*,*,*,すべて,スベテ,スベテ',
                                                         '自分\t名詞,一般,*,*,*,*,自分,ジブン,ジブン']]
 
+    assert mpr.findall("1,000", "名詞", raw=True) == [["1\t名詞,数,*,*,*,*,*"],
+                                                    [",\t名詞,サ変接続,*,*,*,*,*"],
+                                                    ["000\t名詞,数,*,*,*,*,*"]]
 
 def test_neologd():
     mpr = MeCabPosRegex()

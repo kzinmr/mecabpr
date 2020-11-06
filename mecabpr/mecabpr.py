@@ -21,9 +21,23 @@ class MeCabPosRegex:
             string = string.replace(i, "({})".format(j))
         return string
 
+    def split_tagline(self, t):
+        if len(t.split("\t")) == 2:
+            surface, features = t.split("\t")
+            if len(features.split(",")) > 1:
+                features = features.split(",")
+            elif len(features.split("|")) > 1:
+                features = features.split("|")
+            else:
+                features = [features]
+            return [surface] + features
+        else:
+            print("ERROR: invalid tagline")
+            raise
+
     def findall(self, string, pattern, raw=False):
         pos_raw = [t for t in self.tagger.parse(string).split("\n") if "\t" in t]
-        pos_raw_list = [re.split(r',|\t', t) for t in pos_raw]
+        pos_raw_list = [self.split_tagline(t) for t in pos_raw]
 
         # convert string into id sequence
         pos_seq = self.convert_string(pos_raw_list)
